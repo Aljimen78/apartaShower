@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="logo2.jpeg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        xintegrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,7 +96,7 @@
             transition: all 0.2s ease-in-out;
         }
 
-        .gift-item:hover {
+        .gift-item:not(.selected):hover {
             border-color: var(--mora-leche-dark);
             background-color: #f9f4fc;
         }
@@ -106,8 +106,6 @@
             color: #9CA3AF;
             text-decoration: line-through;
             cursor: not-allowed;
-            pointer-events: none;
-            /* Deshabilita el click */
         }
 
         .gift-item.selected .checkbox-custom {
@@ -124,7 +122,14 @@
             flex-shrink: 0;
             transition: all 0.2s ease;
         }
+        
+        /* Estilo para el checkbox seleccionado por el usuario actual */
+        .gift-item[data-user-selected='true'] .checkbox-custom {
+            background-color: var(--mora-leche-dark);
+            border-color: var(--mora-leche-dark);
+        }
 
+        .gift-item[data-user-selected='true'] .checkbox-custom::after,
         .gift-item.selected .checkbox-custom::after {
             content: '✔';
             display: block;
@@ -154,6 +159,14 @@
 
         .whatsapp-fab:hover {
             transform: scale(1.1);
+        }
+        
+        /* Estilos para el summary del collapse */
+        summary {
+            list-style: none; /* Oculta el marcador por defecto */
+        }
+        summary::-webkit-details-marker {
+            display: none;
         }
     </style>
 </head>
@@ -217,7 +230,7 @@
                         <i class="fa-solid fa-location-dot w-6 text-center" style="color: var(--mora-leche-dark);"></i>
                         <span class="ml-2 font-semibold">Dirección:</span>
                     </p>
-                    <p>Parque residencial calle 100, Salón comunal<br>Avenida calle 100 #49-97, Bogotá</p>
+                    <p>Parque residencial calle 100<br> Salón comunal<br>Avenida calle 100 #49-97, Bogotá</p>
                 </div>
             </div>
             <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
@@ -226,21 +239,42 @@
                     <i class="fa-solid fa-map-location-dot mr-2"></i>
                     <span>Ver en Google Maps</span>
                 </a>
-                <!-- 5. Botón para Guardar en Calendario -->
-                <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Aparta-Shower+de+[Nombres]&dates=20250824T150000/20250824T190000&details=¡Acompáñanos+a+celebrar+nuestro+Aparta-Shower!&location=Salón+comunal,+Parque+residencial+calle+100,+Avenida+calle+100+%2349-97,+Bogotá&reminders=e-mail:1440"
+                <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Aparta-Shower+de+Vi+%26+Leo&dates=20250824T150000/20250824T190000&details=¡Acompáñanos+a+celebrar+nuestro+Aparta-Shower!&location=Salón+comunal,+Parque+residencial+calle+100,+Avenida+calle+100+%2349-97,+Bogotá&reminders=e-mail:1440"
                     target="_blank" class="btn btn-primary flex items-center justify-center">
                     <i class="fa-solid fa-calendar-plus mr-2"></i>
                     <span>Guardar en Calendario</span>
                 </a>
             </div>
         </div>
+        
+        <!-- AJUSTE 1: Lista de Regalos (Ahora antes del formulario) y dentro de un Collapse -->
+        <div class="card">
+            <details class="group">
+                <summary class="flex justify-between items-center cursor-pointer list-none">
+                    <div class="text-center w-full">
+                        <h2 class="font-calligraphic text-4xl mb-2 inline-block" style="color: var(--mora-leche-dark);">Lluvia de sobres... o si prefieres</h2>
+                        <p class="text-gray-600">Haz clic aquí para ver nuestra lista de regalos</p>
+                    </div>
+                    <span class="transition-transform duration-300 transform group-open:rotate-90">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+                </summary>
 
-        <!-- 6. Formulario de Confirmación -->
+                <div class="mt-6">
+                    <p class="text-center text-gray-600 mb-6">Hemos creado una lista con algunas cositas que nos harían falta.
+                        Puedes seleccionar <strong>máximo dos</strong> para llevar como regalo.</p>
+                    <div id="gift-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Los regalos se insertarán aquí desde JavaScript -->
+                    </div>
+                    <p id="gift-limit-msg" class="text-center text-red-500 mt-4 hidden">¡Ya has seleccionado el máximo de dos
+                        regalos!</p>
+                </div>
+            </details>
+        </div>
+
+        <!-- Formulario de Confirmación -->
         <div id="rsvp-form" class="card">
-            <h2 class="font-calligraphic text-4xl text-center mb-6" style="color: var(--mora-leche-dark);">Confirma tu
-                asistencia</h2>
-            <h2 class="font-calligraphic text-4xl text-center mb-4" style="color: var(--mora-leche-dark);">(No olvides
-                mirar al final la lista de regalos)</h2>
+            <h2 class="font-calligraphic text-4xl text-center mb-6" style="color: var(--mora-leche-dark);">Confirma tu asistencia</h2>
             <form id="confirmationForm" class="space-y-6">
                 <div>
                     <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
@@ -276,19 +310,6 @@
             <div id="form-response" class="hidden mt-6 text-center text-lg font-medium p-4 rounded-lg"></div>
         </div>
 
-        <!-- 7. Lista de Regalos Interactiva -->
-        <div class="card">
-            <h2 class="font-calligraphic text-4xl text-center mb-2" style="color: var(--mora-leche-dark);">Lluvia de
-                sobres... o si prefieres</h2>
-            <p class="text-center text-gray-600 mb-6">Hemos creado una lista con algunas cositas que nos harían falta.
-                Puedes seleccionar <strong>máximo dos</strong> para llevar como regalo.</p>
-            <div id="gift-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Los regalos se insertarán aquí desde JavaScript -->
-            </div>
-            <p id="gift-limit-msg" class="text-center text-red-500 mt-4 hidden">¡Ya has seleccionado el máximo de dos
-                regalos!</p>
-        </div>
-
     </div>
 
     <!-- Botón flotante de WhatsApp -->
@@ -301,174 +322,13 @@
         </svg>
     </a>
 
-    <!--  Guías de Backend 
-    <div class="mt-16 p-6 bg-gray-100 rounded-lg">
-        <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Guías para Desarrolladores</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-            
-            Opción A: Django
-            <div class="p-6 bg-white rounded-lg shadow">
-                <h3 class="text-xl font-bold mb-4 text-purple-800">Opción A: Conectar con Django</h3>
-                <div class="text-sm space-y-4 text-gray-700">
-                    <p><strong>Paso 1: Configurar el Proyecto Django</strong></p>
-                    <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto"><code># En tu terminal
-django-admin startproject apartashower_project
-cd apartashower_project
-python manage.py startapp rsvp</code></pre>
-                    <p>Añade <code>'rsvp'</code> a <code>INSTALLED_APPS</code> en <code>apartashower_project/settings.py</code>.</p>
-                    
-                    <p><strong>Paso 2: Definir los Modelos (<code>rsvp/models.py</code>)</strong></p>
-                    <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto"><code>from django.db import models
-
-class Guest(models.Model):
-    full_name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=20, blank=True)
-    attending = models.BooleanField()
-    selected_gifts = models.JSONField(default=list)
-
-class Gift(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    is_selected = models.BooleanField(default=False)
-    selected_by = models.ForeignKey(Guest, on_delete=models.SET_NULL, null=True, blank=True)</code></pre>
-                    <p>Corre <code>python manage.py makemigrations</code> y <code>python manage.py migrate</code>.</p>
-                    
-                    <p><strong>Paso 3: Crear la Vista (<code>rsvp/views.py</code>)</strong></p>
-                    <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto"><code>import json
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Guest, Gift
-
-@csrf_exempt # ¡Solo para demo! Usa CSRF en producción.
-def rsvp_view(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        # ... Lógica para guardar Guest y actualizar Gifts ...
-        # Por ejemplo:
-        guest, created = Guest.objects.update_or_create(
-            email=data['email'],
-            defaults={
-                'full_name': data['fullName'],
-                'phone': data['phone'],
-                'attending': data['attendance'] == 'si',
-                'selected_gifts': data['gifts']
-            }
-        )
-        # Marcar regalos como seleccionados
-        for gift_name in data['gifts']:
-            Gift.objects.filter(name=gift_name).update(
-                is_selected=True, selected_by=guest
-            )
-        return JsonResponse({'status': 'success', 'message': '¡Gracias por confirmar!'})
-    
-    # También puedes tener una vista GET para cargar el estado inicial de los regalos
-    if request.method == 'GET':
-        gifts = list(Gift.objects.values('name', 'is_selected'))
-        return JsonResponse({'gifts': gifts})
-        
-    return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)</code></pre>
-                    
-                    <p><strong>Paso 4: Configurar la URL (<code>apartashower_project/urls.py</code>)</strong></p>
-                    <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto"><code>from django.contrib import admin
-from django.urls import path
-from rsvp.views import rsvp_view
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/rsvp/', rsvp_view, name='rsvp_api'),
-]</code></pre>
-                    <p>Finalmente, modifica el JavaScript del HTML para enviar los datos del formulario y los regalos seleccionados a <code>/api/rsvp/</code> usando <code>fetch</code>.</p>
-                </div>
-            </div>
-        
-             Opción B: Google Sheets
-            <div class="p-6 bg-white rounded-lg shadow">
-                <h3 class="text-xl font-bold mb-4 text-green-800">Opción B: Conectar con Google Sheets</h3>
-                <div class="text-sm space-y-4 text-gray-700">
-                    <p><strong>Paso 1: Crear una Hoja de Cálculo en Google Sheets</strong></p>
-                    <p>Crea dos hojas: una llamada "Confirmaciones" con columnas (Timestamp, Nombre, Email, Telefono, Asiste) y otra "Regalos" con columnas (Regalo, Seleccionado, Quien). Llena la columna "Regalo" con la lista de regalos.</p>
-
-                    <p><strong>Paso 2: Crear un Google Apps Script</strong></p>
-                    <p>En tu hoja, ve a <code>Extensiones &gt; Apps Script</code>. Pega el siguiente código:</p>
-                    <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto"><code>const SPREADSHEET_ID = 'TU_ID_DE_HOJA_DE_CÁLCULO';
-const CONFIRMATIONS_SHEET_NAME = 'Confirmaciones';
-const GIFTS_SHEET_NAME = 'Regalos';
-
-function doPost(e) {
-  try {
-    const data = JSON.parse(e.postData.contents);
-    
-    // Guardar confirmación
-    const confSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(CONFIRMATIONS_SHEET_NAME);
-    confSheet.appendRow([
-      new Date(),
-      data.fullName,
-      data.email,
-      data.phone,
-      data.attendance
-    ]);
-    
-    // Actualizar regalos
-    if (data.gifts && data.gifts.length > 0) {
-      const giftSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(GIFTS_SHEET_NAME);
-      const giftData = giftSheet.getDataRange().getValues();
-      
-      data.gifts.forEach(selectedGift => {
-        for (let i = 1; i < giftData.length; i++) {
-          if (giftData[i][0] === selectedGift) {
-            giftSheet.getRange(i + 1, 2).setValue('Sí'); // Columna 'Seleccionado'
-            giftSheet.getRange(i + 1, 3).setValue(data.fullName); // Columna 'Quien'
-            break;
-          }
-        }
-      });
-    }
-    
-    return ContentService.createTextOutput(JSON.stringify({
-      'status': 'success',
-      'message': 'Datos recibidos correctamente'
-    })).setMimeType(ContentService.MimeType.JSON);
-
-  } catch (error) {
-    return ContentService.createTextOutput(JSON.stringify({
-      'status': 'error',
-      'message': error.toString()
-    })).setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-// Función para obtener el estado inicial de los regalos
-function doGet() {
-    const giftSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(GIFTS_SHEET_NAME);
-    const giftData = giftSheet.getRange('A2:B' + giftSheet.getLastRow()).getValues();
-    const giftsStatus = giftData.map(row => ({ name: row[0], isSelected: row[1] === 'Sí' }));
-    
-    return ContentService.createTextOutput(JSON.stringify(giftsStatus))
-        .setMimeType(ContentService.MimeType.JSON);
-}
-
-</code></pre>
-                    <p><strong>Paso 3: Implementar y Autorizar el Script</strong></p>
-                    <p>Guarda el script. Haz clic en <code>Implementar &gt; Nueva implementación</code>. Selecciona <code>Aplicación web</code>, en "Quién tiene acceso" elige <code>Cualquier persona</code>. Haz clic en "Implementar" y copia la URL de la aplicación web.</p>
-                    
-                    <p><strong>Paso 4: Modificar el JavaScript del HTML</strong></p>
-                    <p>Usa la URL de la app web en tu función <code>fetch</code> para enviar los datos del formulario (método POST) y para cargar el estado de los regalos (método GET).</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-ccc -->
     <script>
-        // =================================================================================
-        // INICIO DEL CÓDIGO JAVASCRIPT FINAL
-        // =================================================================================
+        // La sección de guías para desarrolladores se ha omitido para mayor claridad,
+        // pero el código JavaScript funcional se mantiene a continuación.
 
-        // CAMBIO: Se añade la URL del Google Apps Script. Reemplaza esto con tu URL real.
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxp7WcWeKocmN-2olG0nH2Y0EwsZCIgPG1Z0_ylZai_0QgYA7ccV1YkPve_15817A_6/exec';
 
-        // --- LÓGICA DEL CONTADOR (Sin cambios) ---
+        // --- LÓGICA DEL CONTADOR ---
         const countdownDate = new Date("August 24, 2025 15:00:00").getTime();
         const countdownFunction = setInterval(() => {
             const now = new Date().getTime();
@@ -506,7 +366,6 @@ ccc -->
                 item.dataset.giftName = giftName;
                 item.innerHTML = `<div class="checkbox-custom"></div><span>${giftName}</span>`;
                 item.addEventListener('click', () => {
-                    // CAMBIO: Se asegura de que solo los items no deshabilitados sean clickeables
                     if (!item.classList.contains('selected')) {
                         selectGift(item);
                     }
@@ -517,13 +376,10 @@ ccc -->
 
         function selectGift(itemElement) {
             const giftName = itemElement.dataset.giftName;
-
-            // Esta lógica es para la selección/deselección del usuario actual
             const isCurrentlySelected = itemElement.hasAttribute('data-user-selected');
 
             if (isCurrentlySelected) {
                 itemElement.removeAttribute('data-user-selected');
-                itemElement.querySelector('.checkbox-custom').style.backgroundColor = '';
                 selectedGifts = selectedGifts.filter(g => g !== giftName);
             } else {
                 if (selectedGifts.length >= 2) {
@@ -532,7 +388,6 @@ ccc -->
                     return;
                 }
                 itemElement.setAttribute('data-user-selected', 'true');
-                itemElement.querySelector('.checkbox-custom').style.backgroundColor = 'var(--mora-leche-dark)';
                 selectedGifts.push(giftName);
             }
 
@@ -545,7 +400,6 @@ ccc -->
         const form = document.getElementById('confirmationForm');
         const formResponseEl = document.getElementById('form-response');
 
-        // CAMBIO: Se reescribe toda la lógica de envío del formulario para integrarla con Google Sheets
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             const submitButton = e.target.querySelector('button[type="submit"]');
@@ -563,28 +417,24 @@ ccc -->
 
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
-                // CAMBIO: Se usa 'text/plain' como requiere Google Apps Script para este tipo de envío
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(data),
-                mode: 'no-cors' // CAMBIO: Se añade 'no-cors' para evitar errores de CORS con el script de Google. La respuesta no se podrá leer, pero los datos se enviarán.
+                mode: 'no-cors' 
             })
-                .then(() => {
-                    // Como estamos en modo 'no-cors', la respuesta es opaca y no se puede procesar.
-                    // Asumimos éxito y mostramos el mensaje al usuario.
-                    showFormResponse('¡Gracias por confirmar! Tu respuesta ha sido enviada.', 'success');
-                    form.reset();
-                    selectedGifts = [];
-                    // Recargamos el estado de los regalos para que se muestren los recién seleccionados
-                    loadInitialGiftStatus();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showFormResponse('Hubo un error al enviar tu respuesta. Inténtalo de nuevo.', 'error');
-                })
-                .finally(() => {
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Enviar Confirmación';
-                });
+            .then(() => {
+                showFormResponse('¡Gracias por confirmar! Tu respuesta ha sido enviada.', 'success');
+                form.reset();
+                selectedGifts = [];
+                loadInitialGiftStatus();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showFormResponse('Hubo un error al enviar tu respuesta. Inténtalo de nuevo.', 'error');
+            })
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Enviar Confirmación';
+            });
         });
 
         function showFormResponse(message, type) {
@@ -595,14 +445,11 @@ ccc -->
                 : 'block mt-6 text-center text-lg font-medium p-4 rounded-lg bg-red-100 text-red-800';
         }
 
-        // CAMBIO: Se añade la función para cargar el estado de los regalos desde Google Sheets
         function loadInitialGiftStatus() {
-            // Limpia el estado visual antes de cargar el nuevo
             document.querySelectorAll('.gift-item').forEach(item => {
                 item.classList.remove('selected');
                 item.removeAttribute('data-user-selected');
                 item.style.pointerEvents = 'auto';
-                item.querySelector('.checkbox-custom').style.backgroundColor = '';
             });
 
             fetch(GOOGLE_SCRIPT_URL, { method: 'GET' })
@@ -613,8 +460,8 @@ ccc -->
                             if (giftStatus.isSelected) {
                                 const itemElement = document.querySelector(`.gift-item[data-gift-name="${giftStatus.name}"]`);
                                 if (itemElement) {
-                                    itemElement.classList.add('selected'); // Clase para estilos de "ya seleccionado"
-                                    itemElement.style.pointerEvents = 'none'; // Deshabilita clics
+                                    itemElement.classList.add('selected');
+                                    itemElement.style.pointerEvents = 'none';
                                 }
                             }
                         });
@@ -622,8 +469,7 @@ ccc -->
                 })
                 .catch(error => console.error('Error al cargar el estado de los regalos:', error));
         }
-
-        // CAMBIO: Se usa DOMContentLoaded para asegurar que el DOM esté listo antes de ejecutar el script
+        
         document.addEventListener('DOMContentLoaded', () => {
             renderGifts();
             loadInitialGiftStatus();
@@ -633,3 +479,4 @@ ccc -->
 </body>
 
 </html>
+
