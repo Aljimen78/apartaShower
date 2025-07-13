@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Aparta-Shower</title>
+    <link rel="icon" type="image/png" href="/logo2.jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Definición de la paleta de colores y fuentes */
+        :root {
+            --mora-leche-light: #E1BEE7;
+            /* Un tono lila suave */
+            --mora-leche-dark: #ab88c2;
+            /* Un tono mora más oscuro */
+            --perla: #F5F5F5;
+            --gold-text: #DAA520;
+            --dark-text: #4A4A4A;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--perla);
+            color: var(--dark-text);
+        }
+
+        /* Estilo caligráfico dorado para títulos */
+        .font-calligraphic {
+            font-family: 'Great Vibes', cursive;
+            color: var(--gold-text);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Contenedores y Tarjetas */
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Botones */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--mora-leche-dark);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            background-color: #966fb1;
+        }
+
+        /* Estilos para el formulario */
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.5rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--mora-leche-dark);
+            box-shadow: 0 0 0 3px rgba(171, 136, 194, 0.3);
+        }
+
+        /* Estilos para la lista de regalos */
+        .gift-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .gift-item:hover {
+            border-color: var(--mora-leche-dark);
+            background-color: #f9f4fc;
+        }
+
+        .gift-item.selected {
+            background-color: #E5E7EB;
+            color: #9CA3AF;
+            text-decoration: line-through;
+            cursor: not-allowed;
+            pointer-events: none;
+            /* Deshabilita el click */
+        }
+
+        .gift-item.selected .checkbox-custom {
+            background-color: #9CA3AF;
+            border-color: #9CA3AF;
+        }
+
+        .checkbox-custom {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #D1D5DB;
+            border-radius: 0.25rem;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .gift-item.selected .checkbox-custom::after {
+            content: '✔';
+            display: block;
+            text-align: center;
+            color: white;
+            font-size: 0.8rem;
+            line-height: 1.1rem;
+        }
+
+        /* Botón flotante de WhatsApp */
+        .whatsapp-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #25D366;
+            color: white;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-fab:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body class="bg-perla">
+
+    <div class="container mx-auto max-w-4xl p-4 sm:p-8">
+
+        <!-- 1. Imagen de la pareja -->
+        <div class="w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg mb-8">
+            <img src="/Vi&Leo2.jpeg" alt="Foto de la pareja" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Título y Slogan -->
+        <div class="text-center mb-8">
+            <h1 class="font-calligraphic text-5xl sm:text-6xl md:text-7xl mb-4">Colorín, colorado esta soltería se ha
+                acabado...</h1>
+            <p class="text-lg sm:text-xl text-gray-600 italic">Y como el casado quiere casa</p>
+            <p class="text-2xl sm:text-3xl font-semibold mt-4 text-gray-700">Te invitamos a nuestro Aparta-Shower</p>
+        </div>
+
+        <!-- 2. Contador Regresivo -->
+        <div class="card text-center bg-white">
+            <h2 class="font-calligraphic text-4xl mb-4" style="color: var(--mora-leche-dark);">Falta poco</h2>
+            <div id="countdown" class="grid grid-cols-4 gap-4 text-center">
+                <div>
+                    <div id="days" class="text-4xl sm:text-5xl font-bold text-gray-800">00</div>
+                    <div class="text-sm text-gray-500">Días</div>
+                </div>
+                <div>
+                    <div id="hours" class="text-4xl sm:text-5xl font-bold text-gray-800">00</div>
+                    <div class="text-sm text-gray-500">Horas</div>
+                </div>
+                <div>
+                    <div id="minutes" class="text-4xl sm:text-5xl font-bold text-gray-800">00</div>
+                    <div class="text-sm text-gray-500">Minutos</div>
+                </div>
+                <div>
+                    <div id="seconds" class="text-4xl sm:text-5xl font-bold text-gray-800">00</div>
+                    <div class="text-sm text-gray-500">Segundos</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Detalles del Evento -->
+        <div class="card text-center">
+            <h2 class="font-calligraphic text-4xl mb-6" style="color: var(--mora-leche-dark);">¡Te esperamos!</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+                <div class="space-y-4">
+                    <p class="flex items-center justify-center md:justify-start">
+                        <i class="fa-solid fa-calendar-days w-6 text-center" style="color: var(--mora-leche-dark);"></i>
+                        <span class="ml-2"><span class="font-semibold">Fecha:</span> Domingo, 24 de agosto</span>
+                    </p>
+                    <p class="flex items-center justify-center md:justify-start">
+                        <i class="fa-regular fa-clock w-6 text-center" style="color: var(--mora-leche-dark);"></i>
+                        <span class="ml-2"><span class="font-semibold">Hora:</span> 3:00 PM</span>
+                    </p>
+                </div>
+                <div class="space-y-2">
+                    <p class="flex items-center justify-center md:justify-start">
+                        <i class="fa-solid fa-location-dot w-6 text-center" style="color: var(--mora-leche-dark);"></i>
+                        <span class="ml-2 font-semibold">Dirección:</span>
+                    </p>
+                    <p>Parque residencial calle 100, Salón comunal<br>Avenida calle 100 #49-97, Bogotá</p>
+                </div>
+            </div>
+            <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://www.google.com/maps/search/?api=1&query=Avenida+Calle+100+%2349-97,+Bogota"
+                    target="_blank" class="btn btn-primary flex items-center justify-center">
+                    <i class="fa-solid fa-map-location-dot mr-2"></i>
+                    <span>Ver en Google Maps</span>
+                </a>
+                <!-- 5. Botón para Guardar en Calendario -->
+                <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Aparta-Shower+de+[Nombres]&dates=20250824T150000/20250824T190000&details=¡Acompáñanos+a+celebrar+nuestro+Aparta-Shower!&location=Salón+comunal,+Parque+residencial+calle+100,+Avenida+calle+100+%2349-97,+Bogotá&reminders=e-mail:1440"
+                    target="_blank" class="btn btn-primary flex items-center justify-center">
+                    <i class="fa-solid fa-calendar-plus mr-2"></i>
+                    <span>Guardar en Calendario</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 6. Formulario de Confirmación -->
+        <div id="rsvp-form" class="card">
+            <h2 class="font-calligraphic text-4xl text-center mb-6" style="color: var(--mora-leche-dark);">Confirma tu
+                asistencia</h2>
+            <h2 class="font-calligraphic text-4xl text-center mb-4" style="color: var(--mora-leche-dark);">(No olvides
+                mirar al final la lista de regalos)</h2>
+            <form id="confirmationForm" class="space-y-6">
+                <div>
+                    <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+                    <input type="text" id="fullName" name="fullName" class="form-input" required>
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                </div>
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Número móvil</label>
+                    <input type="tel" id="phone" name="phone" class="form-input">
+                </div>
+                <div>
+                    <span class="block text-sm font-medium text-gray-700 mb-2">¿Confirmas tu asistencia?</span>
+                    <div class="flex items-center gap-8">
+                        <label class="flex items-center">
+                            <input type="radio" name="attendance" value="si"
+                                class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300" required>
+                            <span class="ml-2 text-gray-700">Sí, asistiré</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="attendance" value="no"
+                                class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300">
+                            <span class="ml-2 text-gray-700">No podré asistir</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="text-center pt-4">
+                    <button type="submit" class="btn btn-primary w-full sm:w-auto">Enviar Confirmación</button>
+                </div>
+            </form>
+            <div id="form-response" class="hidden mt-6 text-center text-lg font-medium p-4 rounded-lg"></div>
+        </div>
+
+        <!-- 7. Lista de Regalos Interactiva -->
+        <div class="card">
+            <h2 class="font-calligraphic text-4xl text-center mb-2" style="color: var(--mora-leche-dark);">Lluvia de
+                sobres... o si prefieres</h2>
+            <p class="text-center text-gray-600 mb-6">Hemos creado una lista con algunas cositas que nos harían falta.
+                Puedes seleccionar <strong>máximo dos</strong> para llevar como regalo.</p>
+            <div id="gift-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Los regalos se insertarán aquí desde JavaScript -->
+            </div>
+            <p id="gift-limit-msg" class="text-center text-red-500 mt-4 hidden">¡Ya has seleccionado el máximo de dos
+                regalos!</p>
+        </div>
+
+    </div>
+
+    <!-- Botón flotante de WhatsApp -->
+    <a href="https://wa.me/573043885466?text=Hola!%20Tengo%20una%20pregunta%20sobre%20el%20Aparta-Shower."
+        target="_blank" class="whatsapp-fab">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-whatsapp"
+            viewBox="0 0 16 16">
+            <path
+                d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+        </svg>
+    </a>
+
+    <!--  Guías de Backend 
+    <div class="mt-16 p-6 bg-gray-100 rounded-lg">
+        <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Guías para Desarrolladores</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            
+            Opción A: Django
+            <div class="p-6 bg-white rounded-lg shadow">
+                <h3 class="text-xl font-bold mb-4 text-purple-800">Opción A: Conectar con Django</h3>
+                <div class="text-sm space-y-4 text-gray-700">
+                    <p><strong>Paso 1: Configurar el Proyecto Django</strong></p>
+                    <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto"><code># En tu terminal
+django-admin startproject apartashower_project
+cd apartashower_project
+python manage.py startapp rsvp</code></pre>
+                    <p>Añade <code>'rsvp'</code> a <code>INSTALLED_APPS</code> en <code>apartashower_project/settings.py</code>.</p>
+                    
+                    <p><strong>Paso 2: Definir los Modelos (<code>rsvp/models.py</code>)</strong></p>
+                    <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto"><code>from django.db import models
+
+class Guest(models.Model):
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=20, blank=True)
+    attending = models.BooleanField()
+    selected_gifts = models.JSONField(default=list)
+
+class Gift(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    is_selected = models.BooleanField(default=False)
+    selected_by = models.ForeignKey(Guest, on_delete=models.SET_NULL, null=True, blank=True)</code></pre>
+                    <p>Corre <code>python manage.py makemigrations</code> y <code>python manage.py migrate</code>.</p>
+                    
+                    <p><strong>Paso 3: Crear la Vista (<code>rsvp/views.py</code>)</strong></p>
+                    <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto"><code>import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Guest, Gift
+
+@csrf_exempt # ¡Solo para demo! Usa CSRF en producción.
+def rsvp_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        # ... Lógica para guardar Guest y actualizar Gifts ...
+        # Por ejemplo:
+        guest, created = Guest.objects.update_or_create(
+            email=data['email'],
+            defaults={
+                'full_name': data['fullName'],
+                'phone': data['phone'],
+                'attending': data['attendance'] == 'si',
+                'selected_gifts': data['gifts']
+            }
+        )
+        # Marcar regalos como seleccionados
+        for gift_name in data['gifts']:
+            Gift.objects.filter(name=gift_name).update(
+                is_selected=True, selected_by=guest
+            )
+        return JsonResponse({'status': 'success', 'message': '¡Gracias por confirmar!'})
+    
+    # También puedes tener una vista GET para cargar el estado inicial de los regalos
+    if request.method == 'GET':
+        gifts = list(Gift.objects.values('name', 'is_selected'))
+        return JsonResponse({'gifts': gifts})
+        
+    return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)</code></pre>
+                    
+                    <p><strong>Paso 4: Configurar la URL (<code>apartashower_project/urls.py</code>)</strong></p>
+                    <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto"><code>from django.contrib import admin
+from django.urls import path
+from rsvp.views import rsvp_view
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/rsvp/', rsvp_view, name='rsvp_api'),
+]</code></pre>
+                    <p>Finalmente, modifica el JavaScript del HTML para enviar los datos del formulario y los regalos seleccionados a <code>/api/rsvp/</code> usando <code>fetch</code>.</p>
+                </div>
+            </div>
+        
+             Opción B: Google Sheets
+            <div class="p-6 bg-white rounded-lg shadow">
+                <h3 class="text-xl font-bold mb-4 text-green-800">Opción B: Conectar con Google Sheets</h3>
+                <div class="text-sm space-y-4 text-gray-700">
+                    <p><strong>Paso 1: Crear una Hoja de Cálculo en Google Sheets</strong></p>
+                    <p>Crea dos hojas: una llamada "Confirmaciones" con columnas (Timestamp, Nombre, Email, Telefono, Asiste) y otra "Regalos" con columnas (Regalo, Seleccionado, Quien). Llena la columna "Regalo" con la lista de regalos.</p>
+
+                    <p><strong>Paso 2: Crear un Google Apps Script</strong></p>
+                    <p>En tu hoja, ve a <code>Extensiones &gt; Apps Script</code>. Pega el siguiente código:</p>
+                    <pre class="bg-gray-200 p-2 rounded text-xs overflow-x-auto"><code>const SPREADSHEET_ID = 'TU_ID_DE_HOJA_DE_CÁLCULO';
+const CONFIRMATIONS_SHEET_NAME = 'Confirmaciones';
+const GIFTS_SHEET_NAME = 'Regalos';
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents);
+    
+    // Guardar confirmación
+    const confSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(CONFIRMATIONS_SHEET_NAME);
+    confSheet.appendRow([
+      new Date(),
+      data.fullName,
+      data.email,
+      data.phone,
+      data.attendance
+    ]);
+    
+    // Actualizar regalos
+    if (data.gifts && data.gifts.length > 0) {
+      const giftSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(GIFTS_SHEET_NAME);
+      const giftData = giftSheet.getDataRange().getValues();
+      
+      data.gifts.forEach(selectedGift => {
+        for (let i = 1; i < giftData.length; i++) {
+          if (giftData[i][0] === selectedGift) {
+            giftSheet.getRange(i + 1, 2).setValue('Sí'); // Columna 'Seleccionado'
+            giftSheet.getRange(i + 1, 3).setValue(data.fullName); // Columna 'Quien'
+            break;
+          }
+        }
+      });
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      'status': 'success',
+      'message': 'Datos recibidos correctamente'
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      'status': 'error',
+      'message': error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// Función para obtener el estado inicial de los regalos
+function doGet() {
+    const giftSheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(GIFTS_SHEET_NAME);
+    const giftData = giftSheet.getRange('A2:B' + giftSheet.getLastRow()).getValues();
+    const giftsStatus = giftData.map(row => ({ name: row[0], isSelected: row[1] === 'Sí' }));
+    
+    return ContentService.createTextOutput(JSON.stringify(giftsStatus))
+        .setMimeType(ContentService.MimeType.JSON);
+}
+
+</code></pre>
+                    <p><strong>Paso 3: Implementar y Autorizar el Script</strong></p>
+                    <p>Guarda el script. Haz clic en <code>Implementar &gt; Nueva implementación</code>. Selecciona <code>Aplicación web</code>, en "Quién tiene acceso" elige <code>Cualquier persona</code>. Haz clic en "Implementar" y copia la URL de la aplicación web.</p>
+                    
+                    <p><strong>Paso 4: Modificar el JavaScript del HTML</strong></p>
+                    <p>Usa la URL de la app web en tu función <code>fetch</code> para enviar los datos del formulario (método POST) y para cargar el estado de los regalos (método GET).</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+ccc -->
+    <script>
+        // =================================================================================
+        // INICIO DEL CÓDIGO JAVASCRIPT FINAL
+        // =================================================================================
+
+        // CAMBIO: Se añade la URL del Google Apps Script. Reemplaza esto con tu URL real.
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxp7WcWeKocmN-2olG0nH2Y0EwsZCIgPG1Z0_ylZai_0QgYA7ccV1YkPve_15817A_6/exec';
+
+        // --- LÓGICA DEL CONTADOR (Sin cambios) ---
+        const countdownDate = new Date("August 24, 2025 15:00:00").getTime();
+        const countdownFunction = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById("countdown").innerHTML = "<div class='col-span-4 text-2xl font-bold text-gray-800'>¡El día ha llegado!</div>";
+            }
+        }, 1000);
+
+        // --- LÓGICA DE LA LISTA DE REGALOS ---
+        const gifts = [
+            "Toallas para el cuerpo", "Cobijas", "Vasos de vidrio", "Sartén mediano", "Sartén pequeño", "Chocolatera", "Olla grande", "Espátula", "Cuchara para pasta", "Cucharón", "Cuchara de servicio", "Cuchillos de cocina", "Tapete para el baño", "Jabonera", "Porta cepillos para el baño", "Salero y pimientero", "Martillo", "Destornilladores", "Alicate", "Abrelatas", "Recipientes para almuerzo", "Exprimidor", "Escurridor de cubiertos", "Boul pequeño acero inoxidable", "Boul mediano acero inoxidable", "Boul grande acero inoxidable", "Colador acero inoxidable", "Colador para pasta", "Sanpic cítrico", "Jabón para loza", "Escoba", "Recogedor", "Trapero", "Balde escurridor", "Guantes de goma", "Desengrasante", "Cepillo para lavar el baño", "Toalla para las manos", "Churrusco", "Multitoma", "Extensión", "Llave inglesa", "Caneca para la basura pedal", "Cubiertero", "Canasta para ropa sucia", "Botiquín", "Portavasos", "Contenedor para granos e ingredientes (en bambú)", "Coge ollas", "Posa ollas", "Costurero", "Reloj despertador", "Limpiones"
+        ];
+
+        const giftListContainer = document.getElementById('gift-list');
+        const giftLimitMsg = document.getElementById('gift-limit-msg');
+        let selectedGifts = [];
+
+        function renderGifts() {
+            giftListContainer.innerHTML = '';
+            gifts.forEach(giftName => {
+                const item = document.createElement('div');
+                item.classList.add('gift-item');
+                item.dataset.giftName = giftName;
+                item.innerHTML = `<div class="checkbox-custom"></div><span>${giftName}</span>`;
+                item.addEventListener('click', () => {
+                    // CAMBIO: Se asegura de que solo los items no deshabilitados sean clickeables
+                    if (!item.classList.contains('selected')) {
+                        selectGift(item);
+                    }
+                });
+                giftListContainer.appendChild(item);
+            });
+        }
+
+        function selectGift(itemElement) {
+            const giftName = itemElement.dataset.giftName;
+
+            // Esta lógica es para la selección/deselección del usuario actual
+            const isCurrentlySelected = itemElement.hasAttribute('data-user-selected');
+
+            if (isCurrentlySelected) {
+                itemElement.removeAttribute('data-user-selected');
+                itemElement.querySelector('.checkbox-custom').style.backgroundColor = '';
+                selectedGifts = selectedGifts.filter(g => g !== giftName);
+            } else {
+                if (selectedGifts.length >= 2) {
+                    giftLimitMsg.classList.remove('hidden');
+                    setTimeout(() => giftLimitMsg.classList.add('hidden'), 3000);
+                    return;
+                }
+                itemElement.setAttribute('data-user-selected', 'true');
+                itemElement.querySelector('.checkbox-custom').style.backgroundColor = 'var(--mora-leche-dark)';
+                selectedGifts.push(giftName);
+            }
+
+            if (selectedGifts.length < 2) {
+                giftLimitMsg.classList.add('hidden');
+            }
+        }
+
+        // --- LÓGICA DEL FORMULARIO DE CONFIRMACIÓN ---
+        const form = document.getElementById('confirmationForm');
+        const formResponseEl = document.getElementById('form-response');
+
+        // CAMBIO: Se reescribe toda la lógica de envío del formulario para integrarla con Google Sheets
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+
+            const formData = new FormData(form);
+            const data = {
+                fullName: formData.get('fullName'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                attendance: formData.get('attendance'),
+                gifts: selectedGifts
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                // CAMBIO: Se usa 'text/plain' como requiere Google Apps Script para este tipo de envío
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(data),
+                mode: 'no-cors' // CAMBIO: Se añade 'no-cors' para evitar errores de CORS con el script de Google. La respuesta no se podrá leer, pero los datos se enviarán.
+            })
+                .then(() => {
+                    // Como estamos en modo 'no-cors', la respuesta es opaca y no se puede procesar.
+                    // Asumimos éxito y mostramos el mensaje al usuario.
+                    showFormResponse('¡Gracias por confirmar! Tu respuesta ha sido enviada.', 'success');
+                    form.reset();
+                    selectedGifts = [];
+                    // Recargamos el estado de los regalos para que se muestren los recién seleccionados
+                    loadInitialGiftStatus();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showFormResponse('Hubo un error al enviar tu respuesta. Inténtalo de nuevo.', 'error');
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Enviar Confirmación';
+                });
+        });
+
+        function showFormResponse(message, type) {
+            formResponseEl.textContent = message;
+            formResponseEl.classList.remove('hidden');
+            formResponseEl.className = type === 'success'
+                ? 'block mt-6 text-center text-lg font-medium p-4 rounded-lg bg-green-100 text-green-800'
+                : 'block mt-6 text-center text-lg font-medium p-4 rounded-lg bg-red-100 text-red-800';
+        }
+
+        // CAMBIO: Se añade la función para cargar el estado de los regalos desde Google Sheets
+        function loadInitialGiftStatus() {
+            // Limpia el estado visual antes de cargar el nuevo
+            document.querySelectorAll('.gift-item').forEach(item => {
+                item.classList.remove('selected');
+                item.removeAttribute('data-user-selected');
+                item.style.pointerEvents = 'auto';
+                item.querySelector('.checkbox-custom').style.backgroundColor = '';
+            });
+
+            fetch(GOOGLE_SCRIPT_URL, { method: 'GET' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data && Array.isArray(data)) {
+                        data.forEach(giftStatus => {
+                            if (giftStatus.isSelected) {
+                                const itemElement = document.querySelector(`.gift-item[data-gift-name="${giftStatus.name}"]`);
+                                if (itemElement) {
+                                    itemElement.classList.add('selected'); // Clase para estilos de "ya seleccionado"
+                                    itemElement.style.pointerEvents = 'none'; // Deshabilita clics
+                                }
+                            }
+                        });
+                    }
+                })
+                .catch(error => console.error('Error al cargar el estado de los regalos:', error));
+        }
+
+        // CAMBIO: Se usa DOMContentLoaded para asegurar que el DOM esté listo antes de ejecutar el script
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGifts();
+            loadInitialGiftStatus();
+        });
+
+    </script>
+</body>
+
+</html>
